@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5 mb-5">
+    <h2 class="text-center text-primary mb-4">About Our Hospital</h2>
+
+    <div class="card shadow-sm p-4">
+        <p class="lead">
+            Welcome to our Hospital Management System. We aim to provide a simple, fast, and 
+            efficient platform for patients, doctors, and administrators.
+        </p>
+
+        <h4 class="mt-4">Our Mission</h4>
+        <p>
+            To make healthcare more accessible by simplifying appointment booking,
+            doctor availability, patient records, and administrative tasks.
+        </p>
+
+        <h4 class="mt-4">Features</h4>
+        <ul>
+            <li>Easy patient registration</li>
+            <li>Doctor availability and appointment booking</li>
+            <li>Admin dashboard for full control</li>
+            <li>Digital patient history management</li>
+            <li>Secure logins and role-based access</li>
+        </ul>
+
+        <h4 class="mt-4">Why Choose Us?</h4>
+        <p>
+            Our system helps reduce manual work, avoid long queues, and improve communication 
+            between patients and doctors
+        </p>
+    </div>
+    <div class="text-center mt-4">
+    <a href="{{ url_for('index') }}" class="btn btn-secondary btn-sm">Back to Home</a>
+    </div>
+</div>
+
+{% endblock %}

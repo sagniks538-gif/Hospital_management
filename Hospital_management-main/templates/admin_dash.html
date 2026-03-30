@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-4 mb-5">
+
+  <h2 class="text-center mb-4 text-primary fw-bold">Admin Dashboard</h2>
+
+  
+  <div class="d-flex justify-content-center mb-4">
+    <form class="form-inline my-2 my-lg-0" method="POST" action="{{ url_for('admin_dash') }}">
+      <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+
+  
+  <div class="card shadow-sm mb-3">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Registered Doctors</h5>
+
+      <div class="d-flex align-items-center">
+        <a href="{{ url_for('add_doctor') }}" class="btn btn-light btn-sm mr-2">Add Doctor</a>
+
+       
+        <div class="dropdown mr-2">
+          <a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+            Departments
+          </a>
+
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('add_department') }}">Add Department</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('delete_department_pg') }}">Delete Department</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      {% if reg_doctor %}
+      <table class="table">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for d in reg_doctor %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ d.name }}</td>
+
+            <td>
+              {% if d.department %}
+                {{ d.department.name }}
+              {% else %}
+                <span class="badge bg-secondary">Not Assigned</span>
+              {% endif %}
+            </td>
+
+            <td>{{ d.email }}</td>
+            <td>{{ d.gender }}</td>
+            <td>{{ d.phone }}</td>
+
+            <td>
+              {% if d.status == 'blacklisted' %}
+                <span class="text-danger fw-bold">Blacklisted</span>
+              {% else %}
+                <span class="text-success fw-bold">Active</span>
+              {% endif %}
+            </td>
+
+            <td>
+              <a href="{{ url_for('edit_doctor', id=d.id) }}" class="btn btn-sm btn-warning">Edit</a>
+
+              <a href="{{ url_for('delete_doctor', id=d.id) }}" 
+                 class="btn btn-sm btn-danger"
+                 onclick="return confirm('Are you sure you want to delete this doctor?');">Delete</a>
+
+              {% if d.status == 'blacklisted' %}
+                <a href="{{ url_for('unblacklist_doctor', id=d.id) }}" class="btn btn-sm btn-success">Unblacklist</a>
+              {% else %}
+                <a href="{{ url_for('blacklist_doctor', id=d.id) }}" class="btn btn-sm btn-secondary">Blacklist</a>
+              {% endif %}
+            </td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+        <p class="text-center text-muted">No doctors found.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  
+  <div class="card shadow-sm mb-3">
+    <div class="card-header bg-success text-white">
+      <h5 class="mb-0">Registered Patients</h5>
+    </div>
+
+    <div class="card-body">
+      {% if reg_patient %}
+      <table class="table">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for p in reg_patient %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ p.name }}</td>
+            <td>{{ p.email }}</td>
+            <td>{{ p.gender }}</td>
+            <td>{{ p.phone }}</td>
+
+            <td>
+              {% if p.status == 'blacklisted' %}
+                <span class="text-danger fw-bold">Blacklisted</span>
+              {% else %}
+                <span class="text-success fw-bold">Active</span>
+              {% endif %}
+            </td>
+
+            <td>
+              <a href="{{ url_for('edit_patient', id=p.id) }}" class="btn btn-sm btn-warning">Edit</a>
+
+              <a href="{{ url_for('delete_patient', id=p.id) }}" 
+                 class="btn btn-sm btn-danger"
+                 onclick="return confirm('Are you sure you want to delete this patient?');">Delete</a>
+
+              {% if p.status == 'blacklisted' %}
+                <a href="{{ url_for('unblacklist_patient', id=p.id) }}" class="btn btn-sm btn-success">Unblacklist</a>
+              {% else %}
+                <a href="{{ url_for('blacklist_patient', id=p.id) }}" class="btn btn-sm btn-secondary">Blacklist</a>
+              {% endif %}
+            </td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+        <p class="text-center text-muted">No patients found.</p>
+      {% endif %}
+    </div>
+  </div>
+
+ 
+  <div class="card shadow-sm mb-3">
+    <div class="card-header bg-info text-white">
+      <h5 class="mb-0">Upcoming Appointments</h5>
+    </div>
+
+    <div class="card-body">
+      {% if appointments %}
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th>#</th>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Department</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>History</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for a in appointments %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ a.patient_name }}</td>
+            <td>{{ a.doctor_name }}</td>
+            <td>{{ a.department }}</td>
+            <td>{{ a.date }}</td>
+            <td>{{ a.time }}</td>
+
+            <td>
+              <a href="{{ url_for('view_history', patient_id=a.patient_id) }}" 
+                 class="btn btn-sm btn-outline-info">View</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+      {% else %}
+        <p class="text-center text-muted">No upcoming appointments.</p>
+      {% endif %}
+    </div>
+  </div>
+
+ 
+  <div class="card shadow-sm mb-3">
+    <div class="card-header bg-danger text-white">
+      <h5 class="mb-0">Appointments Cancelled by Doctor</h5>
+    </div>
+
+    <div class="card-body">
+      {% if cancelled_by_doctor %}
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th>#</th>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Department</th>
+            <th>Date</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for c in cancelled_by_doctor %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ c.patient.name }}</td>
+            <td>{{ c.doctor.name }}</td>
+            <td>{{ c.doctor.department.name }}</td>
+            <td>{{ c.date }}</td>
+            <td>{{ c.time }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+      {% else %}
+        <p class="text-center text-muted">No cancelled appointments.</p>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

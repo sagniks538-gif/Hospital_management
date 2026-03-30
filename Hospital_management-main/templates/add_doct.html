@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4 text-primary">Add Doctor</h2>
+
+
+  <form method="POST" action="{{ url_for('add_doctor') }}" class="shadow p-4 rounded bg-light">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="name" class="form-label">Doctor Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+      </div>
+      <div class="col-md-6">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+      </div>
+      <div class="col-md-6">
+        <label for="phone" class="form-label">Phone</label>
+        <input type="text" class="form-control" id="phone" name="phone">
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="gender" class="form-label">Gender</label>
+        <select class="form-select" id="gender" name="gender" required>
+          <option value=""> Select </option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group mb-3">
+      <label>Department</label>
+      <select name="department_id" class="form-control" required>
+      <option value="">Select Department</option>
+      {% for dept in departments %}
+      <option value="{{ dept.id }}">{{ dept.name }}</option>
+      {% endfor %}
+      </select>
+      <!-- EXPERIENCE -->
+    <div class="mb-3">
+      <label class="form-label">Experience</label>
+      <input type="text" name="experience" class="form-control" placeholder="e.g. 15 years in Cardiology">
+    </div>
+
+    
+    <div class="mb-3">
+      <label class="form-label">Doctor Bio</label>
+      <textarea name="bio" class="form-control" rows="4"
+        placeholder="Write a short professional description about the doctor..."></textarea>
+    </div>
+
+   
+</div>
+
+    </div>
+
+    <button type="submit" class="btn btn-success w-100">Add Doctor</button>
+  </form>
+
+  <div class="text-center mt-3">
+    <a href="{{ url_for('admin_dash') }}" class="btn btn-light">Back to Dashboard</a>
+  </div>
+</div>
+
+
+{% endblock %}

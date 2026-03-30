@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card p-4 shadow-sm">
+        <div class="text-center">
+          <img src="https://static.vecteezy.com/system/resources/previews/046/305/217/original/hospital-logo-design-illustration-vector.jpg" 
+               alt="Hospital Logo" class="mb-2" width="80">
+          <h4 class="text-dark mb-3">Register your Details</h4>
+        </div>
+
+        <form method="POST" action="{{ url_for('registration') }}">
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" class="form-control" name="username" placeholder="Enter name" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" placeholder="Enter email" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" placeholder="Enter password" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" name="phone" placeholder="Enter phone number" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Aadhar Number</label>
+            <input type="text" class="form-control" name="aadhar" placeholder="Enter Aadhar number" maxlength="12" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Address</label>
+            <textarea class="form-control" name="address" placeholder="Enter your address" rows="2" required></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Date of Birth</label>
+            <input type="date" class="form-control" name="dob" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Gender</label>
+            <select class="form-select" name="gender" required>
+              <option value="">Select gender</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+          </div>
+        </form>
+
+        <p class="text-center mt-3 mb-0">
+          Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+  <h3 class="text-primary mb-4 text-center">Edit Patient Details</h3>
+
+  
+  <form method="POST" class="shadow p-4 rounded bg-light">
+
+    <div class="form-row">
+          <div class="form-group col-md-6">
+        <label class="form-label">Name</label>
+        <input type="text" name="name" class="form-control" value="{{ patient.name }}" required>
+      </div>
+
+      <div class="form-group col-md-6">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" value="{{ patient.email }}" required>
+      </div>
+    </div>
+
+    <div class="form-row mt-3">
+      <div class="form-group col-md-6">
+        <label class="form-label">Phone</label>
+        <input type="text" name="phone" class="form-control" value="{{ patient.phone }}" required>
+      </div>
+
+      <div class="form-group col-md-6">
+        <label class="form-label">Gender</label>
+        <select name="gender" class="form-select">
+          <option value="Male"    {% if patient.gender=='Male' %}selected{% endif %}>Male</option>
+          <option value="Female"  {% if patient.gender=='Female' %}selected{% endif %}>Female</option>
+          <option value="Other" {% if patient.gender=='Other' %}selected{% endif %}>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group form-check mt-3 mb-3">
+      <input type="checkbox" class="form-check-input" id="confirmEdit" required>
+      <label class="form-check-label" for="confirmEdit">I confirm the updated details are correct</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+
+    {% if session['role'] == 'admin' %}
+    <a href="{{ url_for('admin_dash') }}" class="btn btn-secondary w-100 mt-2">Back</a>
+
+    {% elif session['role'] == 'doctor' %}
+    <a href="{{ url_for('doctor_dash') }}" class="btn btn-secondary w-100 mt-2">Back</a>
+
+    {% else %}
+    <a href="{{ url_for('patient_dash') }}" class="btn btn-secondary w-100 mt-2">Back</a>
+    {% endif %}
+
+  </form>
+</div>
+
+{% endblock %}

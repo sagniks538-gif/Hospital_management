@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4 mb-5">
+  <h4 class="text-center mb-4 text-primary">Edit Availability</h4>
+
+  
+  {% if morning_appointment_id %}
+  <div class="alert alert-warning">
+    Morning slot is already booked.
+    <br>You must cancel this appointment first.
+    <a href="{{ url_for('cancel_appointment_doctor', id=morning_appointment_id) }}"
+       class="btn btn-danger btn-sm mt-2">Cancel Appointment</a>
+  </div>
+  {% endif %}
+
+  {% if evening_appointment_id %}
+  <div class="alert alert-warning">
+    Evening slot is already booked.
+    <br>You must cancel this appointment first.
+    <a href="{{ url_for('cancel_appointment_doctor', id=evening_appointment_id) }}"
+       class="btn btn-danger btn-sm mt-2">Cancel Appointment</a>
+  </div>
+  {% endif %}
+
+  <form method="POST" class="border rounded p-4 shadow-sm mt-3">
+
+    <div class="mb-3">
+      <label class="form-label">Date</label>
+      <input type="text" class="form-control" value="{{ avail.date.strftime('%d/%m/%Y') }}" disabled>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Morning Slot</label>
+      <input type="text" name="morning_slot" class="form-control"
+             value="{{ avail.morning_time }}"
+             {% if morning_appointment_id %}disabled{% endif %}>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Evening Slot</label>
+      <input type="text" name="evening_slot" class="form-control"
+             value="{{ avail.evening_time }}"
+             {% if evening_appointment_id %}disabled{% endif %}>
+    </div>
+
+    <div class="text-center">
+      <button class="btn btn-success" type="submit"
+        {% if morning_appointment_id or evening_appointment_id %}disabled{% endif %}>
+        Save Changes
+      </button>
+
+      <a href="{{ url_for('provide_availability') }}" class="btn btn-secondary">Back</a>
+    </div>
+
+  </form>
+</div>
+
+{% endblock %}

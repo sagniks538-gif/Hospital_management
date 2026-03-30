@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4 mb-5">
+
+  <h2 class="text-center mb-4 text-primary fw-bold">Patient Dashboard</h2>
+
+
+<div class="d-flex justify-content-end mb-4">
+  
+  <a href="{{ url_for('edit_patient', id=session['user_id']) }}" 
+     class="btn btn-warning mr-3">
+    Edit Profile
+  </a>
+
+  <a href="{{ url_for('view_history', patient_id=session['user_id']) }}" 
+     class="btn btn-info text-white">
+    View Medical History
+  </a>
+
+</div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-success text-white">
+      <h5 class="mb-0">Available Departments</h5>
+    </div>
+
+    <div class="card-body">
+      {% if departments %}
+      <table class="table table-bordered table-striped">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Department</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for d in departments %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ d.name }}</td>
+
+            <td>
+              <a href="{{ url_for('department_details', id=d.id) }}"
+                 class="btn btn-outline-primary btn-sm">
+                View Doctors
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+      {% else %}
+        <p class="text-center text-muted">No departments available.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Your Upcoming Appointments</h5>
+    </div>
+
+    <div class="card-body">
+      {% if appointments %}
+      <table class="table table-bordered table-striped">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Doctor</th>
+            <th>Department</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+            <th>Cancel</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for a in appointments %}
+            {% if a.status != 'Completed' %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ a.doctor.name }}</td>
+
+              <td>
+                {% if a.doctor.department %}
+                  {{ a.doctor.department.name }}
+                {% else %}
+                  <span class="badge bg-secondary">General</span>
+                {% endif %}
+              </td>
+
+              <td>{{ a.date.strftime('%d-%m-%Y') }}</td>
+              <td>{{ a.time }}</td>
+
+              <td>
+                {% if a.status == 'Cancelled' %}
+                  <span class="badge bg-danger">Cancelled</span>
+                {% else %}
+                  <span class="badge bg-warning text-dark">{{ a.status }}</span>
+                {% endif %}
+              </td>
+
+              <td>
+                {% if a.status != 'Cancelled' %}
+                <a href="{{ url_for('cancel_appointment', id=a.id) }}"
+                   class="btn btn-sm btn-outline-danger">
+                    Cancel
+                </a>
+                {% else %}
+                  —
+                {% endif %}
+              </td>
+            </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+        <p class="text-center text-muted">No upcoming appointments.</p>
+      {% endif %}
+    </div>
+  </div>
+
+
+
+
+  
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-danger text-white">
+      <h5 class="mb-0">Cancelled Appointments by Doctor</h5>
+    </div>
+
+    <div class="card-body">
+      {% if cancelled %}
+      <table class="table table-bordered table-striped">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Doctor</th>
+            <th>Department</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for c in cancelled %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ c.doctor.name }}</td>
+
+            <td>
+              {% if c.doctor.department %}
+                {{ c.doctor.department.name }}
+              {% else %}
+                <span class="badge bg-secondary">General</span>
+              {% endif %}
+            </td>
+
+            <td>{{ c.date.strftime('%d-%m-%Y') }}</td>
+            <td>{{ c.time }}</td>
+
+            <td><span class="badge bg-danger">Cancelled</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+        <p class="text-center text-muted">No cancelled appointments.</p>
+      {% endif %}
+    </div>
+  </div>
+
+
+
+
+
+
+</div>
+
+{% endblock %}

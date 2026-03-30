@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="text-center mt-5">
+  <img src="https://static.vecteezy.com/system/resources/previews/046/305/217/original/hospital-logo-design-illustration-vector.jpg" 
+       alt="Hospital Image" 
+       class="img-fluid mb-4" 
+       style="max-width: 400px; border-radius: 12px;">
+
+  <h1 class="mb-3 text-primary">Welcome to Our Hospital Management System</h1>
+  <p class="lead text-muted mb-4">
+    A simple and secure platform to manage patients, doctors, and appointments efficiently.
+  </p>
+
+  <a href="{{ url_for('registration') }}" class="btn btn-success btn-lg">Get Started</a>
+</div>
+
+{% endblock %}

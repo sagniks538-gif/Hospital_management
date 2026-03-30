@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container mt-4 mb-5">
+    
+    <h2 class="text-center mb-4 text-primary fw-bold">Department: {{ department.name }}</h2>
+
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h5 class="mb-0">Department of {{ department.name }}</h5>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Overview</h5>
+      </div>
+
+      <div class="card-body">
+        <p class="mb-0">{{ department.description or 'No description available.' }}</p>
+      </div>
+    </div>
+
+   
+    <div class="card shadow-sm">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0">Doctors in This Department</h5>
+      </div>
+
+      <div class="card-body">
+        <form method="POST" class="input-group mb-3">
+          <input type="text" name="search" class="form-control" placeholder="Search doctor by name..." value="{{ search_query }}" />
+
+          <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+
+        {% if doctors %}
+          {% for doc in doctors %}
+            <div class="d-flex justify-content-between align-items-center border rounded p-3 mb-2">
+              <div>
+                <strong>{{ doc.name }}</strong><br />
+                <small class="text-muted">{{ doc.email }}</small>
+              </div>
+
+              <div class="d-flex">
+                <a href="{{ url_for('doctor_availability', doctor_id=doc.id) }}" class="btn btn-outline-primary btn-sm ms-2">View Availability</a>
+
+                <a href="{{ url_for('doctor_details', doctor_id=doc.id) }}" class="btn btn-outline-secondary btn-sm">View Details</a>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-center text-muted">No doctors available in this department.</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <a href="{{ url_for('patient_dash') }}" class="btn btn-secondary btn-sm ms-2">Back to Dashboard</a>
+    </div>
+  </div>
+{% endblock %}

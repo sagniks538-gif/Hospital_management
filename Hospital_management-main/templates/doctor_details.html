@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4 mb-5">
+
+  <div class="card shadow p-4">
+    <div class="row">
+
+      <div class="col-md-3 text-center">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+             class="img-fluid mb-3" width="120">
+      </div>
+
+      <div class="col-md-9">
+        <h3>{{ doctor.name }}</h3>
+        <p><strong>Department:</strong> {{ doctor.department.name }}</p>
+
+        <p><strong>Experience:</strong> {{ doctor.experience or "Not provided" }}</p>
+
+        <p><strong>Bio:</strong><br>
+          {{ doctor.bio or "No biography added." }}
+        </p>
+
+        <div class="mt-3">
+          <a href="{{ url_for('doctor_availability', doctor_id=doctor.id) }}" 
+             class="btn btn-primary btn-sm">
+            Check Availability
+          </a>
+
+          <a href="{{ url_for('department_details', id=doctor.department_id) }}"
+             class="btn btn-outline-secondary btn-sm">
+            Go Back
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
